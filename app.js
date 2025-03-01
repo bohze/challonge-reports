@@ -8,10 +8,6 @@ const port = process.env.PORT || 3000
 // Middleware to parse JSON
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
 // Route to list all tournaments from Challonge API
 app.get('/tournaments', async (req, res) => {
   try {
@@ -297,6 +293,11 @@ app.get('/tournaments/:tournament_id/matches', async (req, res) => {
     
     res.status(500).json({ error: 'Failed to fetch matches' });
   }
+});
+
+// Catch-all route to redirect any undefined routes to /tournaments
+app.use('*', (req, res) => {
+  res.redirect('/tournaments');
 });
 
 app.listen(port, () => {
